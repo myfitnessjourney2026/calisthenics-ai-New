@@ -39,7 +39,9 @@ input,select{background:#202b23;color:white;border:1px solid #394a3d;width:100%;
 .daybtn.done{border:1px solid #a5ff54}
 .exercise{background:#202a22;padding:14px;border-radius:12px;margin:9px 0}
 .exercise label{display:flex;align-items:center;gap:10px;cursor:pointer}
-.exercise input{width:19px;height:19px;accent-color:#a5ff54}
+.exercise-icon{width:54px;height:54px;min-width:54px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#263b2b,#17231a);border:1px solid #3b583f;border-radius:12px;font-size:29px;line-height:1}
+.exercise-copy{flex:1;min-width:0}
+.exercise input{width:19px;height:19px;accent-color:#a5ff54;flex:0 0 auto}
 .exercise strong{font-size:13px}
 .exercise small{display:block;color:#a5ff54;margin-top:5px;font-size:12px}
 .phase{color:#a5ff54;font-size:12px;font-weight:bold;margin-bottom:10px}
@@ -365,6 +367,23 @@ function selectPhase(){
  renderPlan();
 }
 
+function getExerciseIcon(name){
+  const n=name.toLowerCase();
+  if(n.includes("push-up") || n.includes("push up")) return "💪";
+  if(n.includes("squat") || n.includes("wall sit")) return "🦵";
+  if(n.includes("lunge")) return "🚶";
+  if(n.includes("plank") || n.includes("hollow")) return "🧍";
+  if(n.includes("bridge")) return "🌉";
+  if(n.includes("calf raise")) return "🦶";
+  if(n.includes("dead bug") || n.includes("leg raise")) return "🏋️";
+  if(n.includes("bird dog")) return "🐕";
+  if(n.includes("snow angel") || n.includes("w raise") || n.includes("w-to-y") || n.includes("swimmer")) return "🤸";
+  if(n.includes("mountain climber")) return "⛰️";
+  if(n.includes("handstand") || n.includes("pike")) return "🙃";
+  if(n.includes("superman")) return "🦸";
+  return "🏃";
+}
+
 function renderPlan(){
 
  const start=(selectedPhase-1)*30+1;
@@ -415,8 +434,9 @@ function renderPlan(){
      <input type="checkbox" ${checked?"checked":""}
       onchange="toggleExercise(${selectedDay},${i},this.checked)">
      <div>
-      <strong>${ex[0]}</strong>
-      <small>${ex[1]}</small>
+      <span class="exercise-icon" aria-hidden="true">${getExerciseIcon(ex[0])}</span>
+     <div class="exercise-copy"><strong>${ex[0]}</strong>
+      <small>${ex[1]}</small></div>
      </div>
     </label>`;
    list.appendChild(div);
