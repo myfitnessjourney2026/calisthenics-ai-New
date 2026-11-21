@@ -2,188 +2,487 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080b0a">
 <title>CALISTHENICS AI</title>
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{
- background:#080b0a;color:#fff;
- font-family:Arial,sans-serif;
- padding:20px;max-width:750px;margin:auto
-}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+body{background:#080b0a;color:white;font-family:Arial,sans-serif;padding:18px;max-width:800px;margin:auto}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
 .logo{font-size:22px;font-weight:900;color:#a5ff54}
-.tag{color:#aaa;font-size:12px;margin-top:5px}
-.badge{background:#17251a;color:#a5ff54;padding:9px 12px;border-radius:20px;font-size:12px}
+.tag{font-size:11px;color:#999;margin-top:5px}
+.badge{background:#17251a;color:#a5ff54;padding:9px;border-radius:20px;font-size:11px}
 h1{font-size:27px;margin:20px 0 8px}
-p{color:#aaa;font-size:14px;line-height:1.5}
-.card{
- background:#131916;border:1px solid #26352a;
- border-radius:17px;padding:18px;margin:15px 0
-}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.stat{background:#17221a;padding:16px;border-radius:14px}
-.stat strong{display:block;font-size:25px;color:#a5ff54;margin-bottom:6px}
+h2{font-size:19px;margin-bottom:15px}
+p{font-size:13px;color:#aaa;line-height:1.6}
+.card{background:#131916;border:1px solid #26352a;border-radius:17px;padding:17px;margin:15px 0}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:#1b261e;padding:15px;border-radius:12px}
+.stat strong{display:block;color:#a5ff54;font-size:24px;margin-bottom:5px}
 .stat span{font-size:12px;color:#aaa}
-h2{font-size:18px;margin-bottom:15px}
-select,input{
- background:#202b23;color:white;border:1px solid #394a3d;
- padding:14px;border-radius:10px;width:100%;margin:8px 0;
- font-size:15px
-}
-button{
- border:0;border-radius:11px;padding:14px;
- font-weight:bold;font-size:14px;cursor:pointer
-}
+button,select{border:0;border-radius:10px;padding:13px;font-size:13px;font-weight:bold;cursor:pointer}
+button{background:#26352a;color:white}
 .primary{background:#a5ff54;color:#101510;width:100%;margin-top:10px}
-.secondary{background:#27342a;color:white;width:100%;margin-top:10px}
-.danger{background:#522b2b;color:white;width:100%;margin-top:10px}
-.camera{
- width:100%;background:#050706;border-radius:14px;
- min-height:220px;display:flex;align-items:center;
- justify-content:center;overflow:hidden;margin:12px 0
-}
-video{width:100%;display:none;transform:scaleX(-1)}
-.camera p{text-align:center;padding:20px}
+.secondary{background:#26352a;color:white;width:100%;margin-top:10px}
+input,select{background:#202b23;color:white;border:1px solid #394a3d;width:100%;margin:8px 0}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:20px 0}
+.tabs button{font-size:11px;padding:12px 5px}
+.tabs button.active{background:#a5ff54;color:#111}
+.page{display:none}
+.page.active{display:block}
 .progress-bg{height:9px;background:#29332b;border-radius:20px;margin-top:12px}
-.progress{height:9px;width:0%;background:#a5ff54;border-radius:20px}
-.exercise{padding:13px;background:#202a22;border-radius:11px;margin:8px 0}
-.exercise span{color:#a5ff54;float:right}
-.actions{display:flex;gap:10px;margin-top:10px}
-.actions button{flex:1}
-footer{text-align:center;color:#777;font-size:12px;padding:25px}
+.progress{height:9px;background:#a5ff54;border-radius:20px;width:0}
+.daygrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:12px 0}
+.daybtn{padding:10px 2px;font-size:11px;border:1px solid #38453b}
+.daybtn.selected{background:#a5ff54;color:#111}
+.daybtn.done{border:1px solid #a5ff54}
+.exercise{background:#202a22;padding:14px;border-radius:12px;margin:9px 0}
+.exercise label{display:flex;align-items:center;gap:10px;cursor:pointer}
+.exercise input{width:19px;height:19px;accent-color:#a5ff54}
+.exercise strong{font-size:13px}
+.exercise small{display:block;color:#a5ff54;margin-top:5px;font-size:12px}
+.phase{color:#a5ff54;font-size:12px;font-weight:bold;margin-bottom:10px}
+.camera{background:#050706;border-radius:13px;min-height:200px;display:flex;justify-content:center;align-items:center;overflow:hidden;margin:12px 0}
+video{width:100%;display:none}
+.camera p{text-align:center}
+.historyitem{padding:12px;background:#202a22;border-radius:10px;margin:8px 0;font-size:13px}
+footer{text-align:center;padding:25px;color:#777;font-size:11px}
 </style>
 </head>
 
 <body>
 
 <header>
- <div>
-  <div class="logo">CALISTHENICS AI</div>
-  <div class="tag">YOUR PERSONAL FITNESS COACH</div>
- </div>
- <div class="badge">● READY</div>
+<div>
+<div class="logo">CALISTHENICS AI</div>
+<div class="tag">YOUR PERSONAL FITNESS COACH</div>
+</div>
+<div class="badge">● READY</div>
 </header>
 
+<div class="tabs">
+<button class="active" onclick="showPage('home',this)">HOME</button>
+<button onclick="showPage('plan',this)">90-DAY PLAN</button>
+<button onclick="showPage('workout',this)">WORKOUT</button>
+</div>
+
+<!-- HOME -->
+
+<section id="home" class="page active">
+
 <h1>Welcome Back! 👋</h1>
-<p>Your fitness journey starts here. Stay consistent and become stronger every day.</p>
+<p>Build strength. Improve consistency. Track your transformation.</p>
 
 <div class="card">
- <h2>Today's Progress</h2>
- <div class="stats">
-  <div class="stat">
-   <strong id="workouts">0</strong>
-   <span>Completed workouts</span>
-  </div>
-  <div class="stat">
-   <strong id="reps">0</strong>
-   <span>Total repetitions</span>
-  </div>
-  <div class="stat">
-   <strong id="minutes">0</strong>
-   <span>Workout minutes</span>
-  </div>
-  <div class="stat">
-   <strong id="days">0%</strong>
-   <span>Daily completion</span>
-  </div>
- </div>
- <div class="progress-bg"><div class="progress" id="progress"></div></div>
+<h2>Today's Progress</h2>
+<div class="stats">
+<div class="stat"><strong id="workouts">0</strong><span>Completed workouts</span></div>
+<div class="stat"><strong id="reps">0</strong><span>Total repetitions</span></div>
+<div class="stat"><strong id="minutes">0</strong><span>Workout minutes</span></div>
+<div class="stat"><strong id="days">0%</strong><span>90-day completion</span></div>
+</div>
+<div class="progress-bg"><div class="progress" id="progress"></div></div>
 </div>
 
 <div class="card">
- <h2>🏋️ Start Your Workout</h2>
- <p>Select an exercise to begin.</p>
-
- <select id="exercise">
-  <option>Push-ups</option>
-  <option>Knee Push-ups</option>
-  <option>Squats</option>
-  <option>Reverse Lunges</option>
-  <option>Plank</option>
-  <option>Mountain Climbers</option>
-  <option>Glute Bridges</option>
-  <option>Wall Sit</option>
- </select>
-
- <div class="camera">
-  <p id="cameraMessage">📷<br><br>Your camera preview will appear here.</p>
-  <video id="video" autoplay playsinline muted></video>
- </div>
-
- <button class="primary" onclick="startCamera()">📷 START CAMERA</button>
- <button class="secondary" onclick="stopCamera()">STOP CAMERA</button>
-
- <div class="stats" style="margin-top:15px">
-  <div class="stat">
-   <strong id="count">0</strong>
-   <span>Repetitions</span>
-  </div>
-  <div class="stat">
-   <strong id="timer">00:00</strong>
-   <span>Workout timer</span>
-  </div>
- </div>
-
- <div class="actions">
-  <button class="secondary" onclick="addRep()">+ REP</button>
-  <button class="secondary" onclick="removeRep()">- REP</button>
- </div>
-
- <button class="primary" onclick="startTimer()">START WORKOUT</button>
- <button class="danger" onclick="finishWorkout()">FINISH & SAVE</button>
+<h2>📅 Your 90-Day Challenge</h2>
+<p>Phase 1 – Foundation: Days 1–30</p>
+<p>Phase 2 – Strength Building: Days 31–60</p>
+<p>Phase 3 – Advanced Preparation: Days 61–90</p>
+<button class="primary" onclick="showPage('plan',document.querySelectorAll('.tabs button')[1])">OPEN DAILY WORKOUT PLAN</button>
 </div>
 
 <div class="card">
- <h2>📅 My 90-Day Challenge</h2>
- <div class="stats">
-  <div class="stat">
-   <strong>01–30</strong><span>Foundation</span>
-  </div>
-  <div class="stat">
-   <strong>31–60</strong><span>Strength Building</span>
-  </div>
-  <div class="stat">
-   <strong>61–90</strong><span>Advanced Preparation</span>
-  </div>
- </div>
+<h2>🌅 Morning Routine</h2>
+<p>Follow your scheduled daily workout.</p>
+<button class="primary" onclick="showPage('plan',document.querySelectorAll('.tabs button')[1])">START MORNING PLAN</button>
 </div>
 
 <div class="card">
- <h2>📋 Weekly Workout Schedule</h2>
- <div class="exercise">Monday – Push + Core <span>01</span></div>
- <div class="exercise">Tuesday – Legs <span>02</span></div>
- <div class="exercise">Wednesday – Active Recovery <span>03</span></div>
- <div class="exercise">Thursday – Back + Core <span>04</span></div>
- <div class="exercise">Friday – Full Body <span>05</span></div>
- <div class="exercise">Saturday – Walking + Mobility <span>06</span></div>
- <div class="exercise">Sunday – Rest <span>07</span></div>
+<h2>🌙 Evening Routine</h2>
+<div class="exercise">Walking <small>10–15 minutes</small></div>
+<div class="exercise">Stretching <small>5–10 minutes</small></div>
+<div class="exercise">Mobility <small>5 minutes</small></div>
+<button class="primary" onclick="eveningDone()">COMPLETE EVENING ROUTINE</button>
 </div>
 
 <div class="card">
- <h2>🌅 Morning & 🌙 Evening</h2>
- <p>Morning: Follow your scheduled calisthenics workout.</p>
- <br>
- <p>Evening: Walking 10–15 min, stretching 5–10 min and mobility 5 min.</p>
+<h2>🏆 Workout History</h2>
+<div id="history">No workouts saved yet.</div>
+</div>
+
+</section>
+
+<!-- DAILY PLAN -->
+
+<section id="plan" class="page">
+
+<h1>90-Day Workout Plan</h1>
+<p>Choose a day to see your scheduled exercises, sets and repetitions.</p>
+
+<div class="card">
+<h2>Select Phase</h2>
+<select id="phaseSelect" onchange="selectPhase()">
+<option value="1">Phase 1 – Foundation (Days 1–30)</option>
+<option value="2">Phase 2 – Strength Building (Days 31–60)</option>
+<option value="3">Phase 3 – Advanced Preparation (Days 61–90)</option>
+</select>
 </div>
 
 <div class="card">
- <h2>🏆 Workout History</h2>
- <div id="history"><p>No workouts saved yet. Start your first workout!</p></div>
+<h2>Select Workout Day</h2>
+<div class="daygrid" id="dayGrid"></div>
+<div class="phase" id="phaseName"></div>
+<h2 id="dayTitle">Day 1</h2>
+<p id="dayDescription"></p>
+<div class="progress-bg"><div class="progress" id="dayProgress"></div></div>
+<p id="dayProgressText" style="margin-top:8px"></p>
 </div>
+
+<div class="card">
+<h2>Today's Exercises</h2>
+<div id="exerciseList"></div>
+<button class="primary" onclick="completeDay()">COMPLETE DAILY WORKOUT</button>
+</div>
+
+<div class="card">
+<h2>🔥 Warm-up</h2>
+<p>Before every workout (5–7 minutes):</p>
+<div class="exercise">March in place – 60 sec</div>
+<div class="exercise">Arm circles – 30 sec each way</div>
+<div class="exercise">Shoulder rolls – 30 sec</div>
+<div class="exercise">Hip hinges – 10 reps</div>
+<div class="exercise">Easy squats – 10 reps</div>
+<div class="exercise">Wrist circles – 30 sec</div>
+<div class="exercise">Easy wall push-ups – 8 reps</div>
+</div>
+
+</section>
+
+<!-- WORKOUT -->
+
+<section id="workout" class="page">
+
+<h1>AI Camera Workout</h1>
+<p>Choose your exercise and start your workout.</p>
+
+<div class="card">
+<h2>Select Exercise</h2>
+<select id="exerciseSelect">
+<option>Wall or Knee Push-ups</option>
+<option>Incline Push-ups</option>
+<option>Standard Push-ups</option>
+<option>Squats</option>
+<option>Reverse Lunges</option>
+<option>Glute Bridges</option>
+<option>Calf Raises</option>
+<option>Plank</option>
+<option>Mountain Climbers</option>
+<option>Bird Dog</option>
+</select>
+
+<div class="camera">
+<p id="cameraMessage">📷<br><br>Camera preview appears here.</p>
+<video id="video" autoplay playsinline muted></video>
+</div>
+
+<button class="primary" onclick="startCamera()">START CAMERA</button>
+<button class="secondary" onclick="stopCamera()">STOP CAMERA</button>
+
+<div class="stats" style="margin-top:15px">
+<div class="stat"><strong id="count">0</strong><span>Repetitions</span></div>
+<div class="stat"><strong id="timer">00:00</strong><span>Duration</span></div>
+</div>
+
+<button class="primary" onclick="addRep()">+ ADD REP</button>
+<button class="secondary" onclick="startTimer()">START TIMER</button>
+<button class="secondary" onclick="finishWorkout()">FINISH & SAVE</button>
+
+<p style="margin-top:12px">Note: Repetition counting is currently manual. AI pose detection has not yet been implemented.</p>
+</div>
+
+</section>
 
 <footer>CALISTHENICS AI • BUILD YOUR STRENGTH 💚</footer>
 
 <script>
+
+// ORIGINAL 90-DAY PLAN
+
+const plans = {
+
+1:{
+name:"PHASE 1 – FOUNDATION",
+description:"Easy to moderate effort. Rest 60–90 seconds between sets.",
+days:[
+[
+["Wall or knee push-ups","3 × 6–10"],
+["Incline push-ups (optional)","2 × 6–10"],
+["Knee plank","3 × 15–25 sec"],
+["Dead bug","2 × 8 each side"]
+],
+[
+["Bodyweight squats","3 × 10–15"],
+["Reverse lunges","2 × 6–8 each leg"],
+["Glute bridges","3 × 10–15"],
+["Calf raises","3 × 12–20"],
+["Wall sit","2 × 15–30 sec"]
+],
+[],
+[
+["Prone W raises","3 × 8–12"],
+["Reverse snow angels","2 × 8–12"],
+["Bird dog","3 × 8 each side"],
+["Gentle superman hold","2 × 10–15 sec"],
+["Side plank from knees","2 × 15–20 sec each side"]
+],
+[
+["Wall/knee push-ups","2 × 6–10"],
+["Squats","2 × 12–15"],
+["Glute bridges","2 × 12"],
+["Slow mountain climbers","2 × 10 each side"],
+["Plank","2 × 15–25 sec"]
+],
+[],
+[]
+]
+},
+
+2:{
+name:"PHASE 2 – STRENGTH BUILDING",
+description:"Rest 60–120 seconds. Choose variations that leave 1–3 good reps in reserve.",
+days:[
+[
+["Standard or knee push-ups","3 × 6–12"],
+["Close-grip push-ups","2 × 6–10"],
+["Pike push-ups","3 × 5–8"],
+["Plank","3 × 25–40 sec"],
+["Dead bug","2 × 10 each side"]
+],
+[
+["Squats (3-sec lowering)","3 × 12–20"],
+["Reverse lunges","3 × 8–10 each leg"],
+["Single-leg glute bridge or regular","2 × 8 each leg"],
+["Calf raises","3 × 15–25"],
+["Wall sit","3 × 25–40 sec"]
+],
+[],
+[
+["Prone W raises","3 × 10–15"],
+["Reverse snow angels","3 × 10–15"],
+["Bird dog (2-sec pause)","3 × 10 each side"],
+["Swimmers","2 × 10 each side"],
+["Side plank","2 × 20–30 sec each side"]
+],
+[
+["Push-ups","3 × 6–12"],
+["Squats","3 × 15"],
+["Pike push-ups","2 × 6–8"],
+["Glute bridges","3 × 15"],
+["Mountain climbers","3 × 20 total"],
+["Hollow-body tuck hold","3 × 10–20 sec"]
+],
+[],
+[]
+]
+},
+
+3:{
+name:"PHASE 3 – ADVANCED PREPARATION",
+description:"Use harder variations only with pain-free control. Rest 90–150 seconds on challenging sets.",
+days:[
+[
+["Standard or decline push-ups","4 × 6–12"],
+["Pike push-ups","3 × 6–10"],
+["Close-grip push-ups","3 × 6–10"],
+["Wall handstand hold or pike hold","3 × 10–25 sec"],
+["Plank","3 × 40–60 sec"]
+],
+[
+["Tempo squats (3-sec lowering)","4 × 15–20"],
+["Reverse lunge or supported Bulgarian split squat","3 × 8–12 each leg"],
+["Single-leg glute bridge","3 × 8–12 each leg"],
+["Single-leg calf raises","3 × 12–15 each leg"],
+["Wall sit","3 × 40–60 sec"]
+],
+[],
+[
+["Prone W-to-Y raises","3 × 8–12"],
+["Reverse snow angels","3 × 12–15"],
+["Bird dog (3-sec pause)","3 × 10 each side"],
+["Swimmers","3 × 10 each side"],
+["Side plank","3 × 25–40 sec each side"],
+["Hollow-body tuck hold","3 × 15–25 sec"]
+],
+[
+["Push-ups","3 × 8–15"],
+["Squats","3 × 15–20"],
+["Pike push-ups","3 × 6–10"],
+["Reverse lunges","2 × 10 each leg"],
+["Mountain climbers","3 × 20–30 total"],
+["Plank","3 × 45–60 sec"]
+],
+[],
+[]
+]
+}
+
+};
+
+const weekdayNames=[
+"Monday","Tuesday","Wednesday","Thursday",
+"Friday","Saturday","Sunday"
+];
+
+const descriptions=[
+"Workout A – Push + Core",
+"Workout B – Legs",
+"Active Recovery – Easy walking and mobility",
+"Workout C – Back/Posture + Core",
+"Workout D – Full Body",
+"Optional Walking + Mobility",
+"Rest Day – Recovery"
+];
+
+let selectedDay=1;
+let selectedPhase=1;
 let reps=0;
 let seconds=0;
 let interval=null;
 let stream=null;
 
+function showPage(id,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+ if(button)button.classList.add("active");
+}
+
+function selectPhase(){
+ selectedPhase=Number(document.getElementById("phaseSelect").value);
+ selectedDay=(selectedPhase-1)*30+1;
+ renderPlan();
+}
+
+function renderPlan(){
+
+ const start=(selectedPhase-1)*30+1;
+ const end=start+29;
+
+ document.getElementById("phaseName").textContent=plans[selectedPhase].name;
+
+ const grid=document.getElementById("dayGrid");
+ grid.innerHTML="";
+
+ for(let d=start;d<=end;d++){
+  const b=document.createElement("button");
+  b.className="daybtn";
+  b.textContent=d;
+  if(d===selectedDay)b.classList.add("selected");
+  if(isDayDone(d))b.classList.add("done");
+  b.onclick=()=>{
+   selectedDay=d;
+   renderPlan();
+  };
+  grid.appendChild(b);
+ }
+
+ const weekday=(selectedDay-1)%7;
+ const exercises=plans[selectedPhase].days[weekday];
+
+ document.getElementById("dayTitle").textContent=
+ "Day "+selectedDay+" – "+weekdayNames[weekday];
+
+ document.getElementById("dayDescription").textContent=
+ descriptions[weekday]+" | "+plans[selectedPhase].description;
+
+ const list=document.getElementById("exerciseList");
+ list.innerHTML="";
+
+ if(exercises.length===0){
+  const msg=weekday===6?
+  "Enjoy your rest day. Allow your body to recover.":
+  "Easy walking and gentle mobility. No hard training.";
+  list.innerHTML="<p>"+msg+"</p>";
+ }else{
+  exercises.forEach((ex,i)=>{
+   const checked=isExerciseDone(selectedDay,i);
+   const div=document.createElement("div");
+   div.className="exercise";
+   div.innerHTML=`
+    <label>
+     <input type="checkbox" ${checked?"checked":""}
+      onchange="toggleExercise(${selectedDay},${i},this.checked)">
+     <div>
+      <strong>${ex[0]}</strong>
+      <small>${ex[1]}</small>
+     </div>
+    </label>`;
+   list.appendChild(div);
+  });
+ }
+
+ updateDayProgress();
+}
+
+function getPlanData(){
+ return JSON.parse(localStorage.getItem("planProgress")||"{}");
+}
+
+function isExerciseDone(day,index){
+ return !!getPlanData()[day+"-"+index];
+}
+
+function toggleExercise(day,index,value){
+ const d=getPlanData();
+ d[day+"-"+index]=value;
+ localStorage.setItem("planProgress",JSON.stringify(d));
+ updateDayProgress();
+ renderGridStatus();
+ updateDashboard();
+}
+
+function isDayDone(day){
+ const weekday=(day-1)%7;
+ const exercises=plans[Math.ceil(day/30)].days[weekday];
+ if(!exercises.length)return false;
+ return exercises.every((e,i)=>isExerciseDone(day,i));
+}
+
+function updateDayProgress(){
+ const weekday=(selectedDay-1)%7;
+ const exercises=plans[selectedPhase].days[weekday];
+ const done=exercises.filter((e,i)=>isExerciseDone(selectedDay,i)).length;
+ const percent=exercises.length?Math.round(done/exercises.length*100):0;
+ document.getElementById("dayProgress").style.width=percent+"%";
+ document.getElementById("dayProgressText").textContent=
+ done+" of "+exercises.length+" exercises completed ("+percent+"%)";
+}
+
+function renderGridStatus(){
+ renderPlan();
+}
+
+function completeDay(){
+ const weekday=(selectedDay-1)%7;
+ const exercises=plans[selectedPhase].days[weekday];
+ if(!exercises.length){
+  alert("This is a recovery or rest day.");
+  return;
+ }
+ const d=getPlanData();
+ exercises.forEach((e,i)=>d[selectedDay+"-"+i]=true);
+ localStorage.setItem("planProgress",JSON.stringify(d));
+ renderPlan();
+ updateDashboard();
+ alert("Day "+selectedDay+" completed! Great work! 💚");
+}
+
+// WORKOUT HISTORY
+
 function getData(){
- return JSON.parse(localStorage.getItem("fitnessData") ||
+ return JSON.parse(localStorage.getItem("fitnessData")||
  '{"workouts":0,"reps":0,"minutes":0,"history":[]}');
 }
 
@@ -192,27 +491,25 @@ function updateDashboard(){
  document.getElementById("workouts").textContent=d.workouts;
  document.getElementById("reps").textContent=d.reps;
  document.getElementById("minutes").textContent=d.minutes;
- document.getElementById("days").textContent=
- Math.min(100,Math.round(d.workouts/90*100))+"%";
- document.getElementById("progress").style.width=
- Math.min(100,d.workouts/90*100)+"%";
+
+ let completed=0;
+ for(let i=1;i<=90;i++){
+  if(isDayDone(i))completed++;
+ }
+ const pct=Math.round(completed/90*100);
+ document.getElementById("days").textContent=pct+"%";
+ document.getElementById("progress").style.width=pct+"%";
 
  const history=document.getElementById("history");
  history.innerHTML=d.history.length?
  d.history.slice().reverse().map(x=>
- '<div class="exercise">'+x.name+
- ' <span>'+x.reps+' reps</span><br><small>'+x.date+
- ' • '+x.minutes+' min</small></div>'
- ).join(""):"<p>No workouts saved yet.</p>";
+ `<div class="historyitem">${x.name}
+ <br><small>${x.reps} reps • ${x.minutes} min • ${x.date}</small></div>`
+ ).join(""):"No workouts saved yet.";
 }
 
 function addRep(){
  reps++;
- document.getElementById("count").textContent=reps;
-}
-
-function removeRep(){
- reps=Math.max(0,reps-1);
  document.getElementById("count").textContent=reps;
 }
 
@@ -225,13 +522,16 @@ function formatTime(){
 function startTimer(){
  if(interval)return;
  interval=setInterval(()=>{
- seconds++;
- formatTime();
+  seconds++;
+  formatTime();
  },1000);
 }
 
 async function startCamera(){
  try{
+  if(!navigator.mediaDevices?.getUserMedia){
+   throw new Error("Camera requires HTTPS and a supported browser.");
+  }
   stream=await navigator.mediaDevices.getUserMedia({
    video:{facingMode:"user"},audio:false
   });
@@ -240,28 +540,28 @@ async function startCamera(){
   video.style.display="block";
   document.getElementById("cameraMessage").style.display="none";
  }catch(e){
-  alert("Camera unavailable. Allow camera permission and use the website through HTTPS.");
+  alert("Camera unavailable. Check browser permission and HTTPS.");
  }
 }
 
 function stopCamera(){
  if(stream){
-  stream.getTracks().forEach(track=>track.stop());
+  stream.getTracks().forEach(t=>t.stop());
   stream=null;
  }
- document.getElementById("video").srcObject=null;
- document.getElementById("video").style.display="none";
+ const v=document.getElementById("video");
+ v.srcObject=null;
+ v.style.display="none";
  document.getElementById("cameraMessage").style.display="block";
 }
 
 function finishWorkout(){
- clearInterval(interval);
- interval=null;
-
  if(seconds===0){
-  alert("Start your workout timer first!");
+  alert("Start your timer first!");
   return;
  }
+ clearInterval(interval);
+ interval=null;
 
  const d=getData();
  const mins=Math.max(1,Math.round(seconds/60));
@@ -270,7 +570,7 @@ function finishWorkout(){
  d.reps+=reps;
  d.minutes+=mins;
  d.history.push({
-  name:document.getElementById("exercise").value,
+  name:document.getElementById("exerciseSelect").value,
   reps:reps,
   minutes:mins,
   date:new Date().toLocaleString()
@@ -281,14 +581,22 @@ function finishWorkout(){
  stopCamera();
  reps=0;
  seconds=0;
- formatTime();
  document.getElementById("count").textContent="0";
+ formatTime();
  updateDashboard();
- alert("Workout saved successfully! Great job! 💚");
+
+ alert("Workout saved successfully! 💚");
 }
 
-updateDashboard();
-</script>
+function eveningDone(){
+ const today=new Date().toISOString().slice(0,10);
+ localStorage.setItem("evening-"+today,"done");
+ alert("Evening routine completed! Great job!");
+}
 
+renderPlan();
+updateDashboard();
+
+</script>
 </body>
-  </html>
+</html>
